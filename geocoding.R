@@ -1,12 +1,11 @@
 ##
-## DATATON 2014
+## Title:  Geo code addresses
+## Date:   June, 2014
+## Author: Omar Trejo Navarro
+## Email:  otrenav [at] gmail [dot] com
 ##
-## geocoding.R
-##
-## Get coordinates of address using
-## Google's geo-coding API.
-##
-## Omar Trejo
+## Ger coordinates of address using Google's
+## geo-coding API.
 ##
 
 ## Note: For server reponses see documentation at
@@ -20,13 +19,13 @@ getCoordinates <- function(address) {
         address, "&sensor=false", sep = "")
     map_data <- fromJSON(paste(readLines(url), collapse = ""))
     if (map_data$status == "OK") {
-        coord <- cbind(
+        coords <- cbind(
             map_data$results[[1]]$geometry$location$lat,
             map_data$results[[1]]$geometry$location$lng)
     } else {
-        coord <- c(NA, NA)
+        coords <- NULL
     }
-    return(coord)
+    return(coords)
 }
 
 ## Call with:

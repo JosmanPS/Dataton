@@ -29,10 +29,6 @@ g_rpart <- rpart(crimen~., data = train.data)
 g_party <- as.party(g_rpart)
 plot(g_party, "simple")
 
-
-
-
-
 # boosting algorithm
 gbmGrid <- expand.grid(.interaction.depth = seq(1, 7, by = 2),
                        .n.trees = seq(100, 1000, by = 50),
@@ -52,13 +48,11 @@ ggplot(gmTune)
 gbm.pred <- predict(gbmTune, test.data)
 confusionMatrix(gbm.pred, test.data$crimen)
 
-
 roc(test.data$crimen,gbm.pred)
 
 # random forest
 forest.pred <- predict(forest.fit, newdata = test.data)
 mean((forest.pred!=test.data$crimen))
-
 
 rpart1a <- as.party(forest.fit[[1]])
 plot(rpart1a)

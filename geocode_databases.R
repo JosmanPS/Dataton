@@ -1,27 +1,24 @@
 ##
-## DATATON 2014
-##
-## geocode_databases.R
+## Title:  Geo-code Zapopan databases
+## Date:   June, 2014
+## Author: Omar Trejo Navarro
+## Email:  otrenav [at] gmail [dot] com
 ##
 ## Geo-code databases available from Zapopan.
 ##
-## Omar Trejo
-##
 
 ## Note: be careful with addresses that are not
-##       well formatted and avoid sending unnecessary
-##       requests to the Google servers.
+## well formatted and avoid sending unnecessary
+## requests to the Google servers.
 
-setwd("~/Dropbox/Consultora/Projects/DATATON/")
-
+##-------------
+##-------------
 ##
 ## Eventos.csv
 ##
 
 eventos <- read.csv("Input/Data/Zapopan/Eventos.csv")
-## eventos <- read.csv("Output/Data/Eventos_geo.csv")
-
-eventos <- cbind(eventos, 
+eventos <- cbind(eventos,
                  matrix(data = NA, 
                         nrow = dim(eventos)[1], 
                         ncol = 2))
@@ -43,23 +40,26 @@ for (i in 1:dim(eventos)[1]) {
     }
 }
 
-write.csv(eventos, file = "Output/Data/Eventos_geo.csv", row.names = FALSE)
+write.csv(eventos,
+          file = "Output/Data/Eventos_geo.csv", row.names = FALSE)
 
+##--------------
+##--------------
 ##
 ## Tianguis.csv
 ##
 
 ## Note: There are some locale problems with this file.
-##       To fix them we need to change the locale.
+## To fix them we need to change the locale.
 Sys.setlocale('LC_ALL','C')
 
 tianguis <- read.csv("Output/Data/Tianguis_geo.csv")
 colonias <- read.csv("Output/Data/Colonias_clean.csv")
 
 tianguis <- cbind(tianguis, 
-                 matrix(data = NA, 
-                        nrow = dim(tianguis)[1], 
-                        ncol = 3))
+                  matrix(data = NA, 
+                         nrow = dim(tianguis)[1], 
+                         ncol = 3))
 
 colnames(tianguis)[5:7] <- c("ColNombre", "Lat", "Long")
 
@@ -126,6 +126,8 @@ for (i in 1:dim(tianguis)[1]) {
 
 write.csv(tianguis, file = "Output/Data/Tianguis_geo_clean.csv", row.names = FALSE)
 
+##--------------
+##--------------
 ##
 ## Colonias.csv
 ##
@@ -133,9 +135,9 @@ write.csv(tianguis, file = "Output/Data/Tianguis_geo_clean.csv", row.names = FAL
 colonias <- read.csv("Output/Data/Colonias_clean.csv")
 
 colonias <- cbind(colonias, 
-                 matrix(data = NA, 
-                        nrow = dim(colonias)[1], 
-                        ncol = 4))
+                  matrix(data = NA, 
+                         nrow = dim(colonias)[1], 
+                         ncol = 4))
 
 colnames(colonias)[46:49] <- c("LatxNombre", "LongxNombre", "LatxCP", "LongxCP")
 
@@ -143,13 +145,16 @@ for (i in 1:dim(colonias)[1]) {
     
     ## Find out coordinates using the colonia name
     
-    if (any(is.na(colonias$LatxNombre[i]), is.na(colonias$LongxNombre[i]))) {
+    if (any(
+        is.na(colonias$LatxNombre[i]),
+        is.na(colonias$LongxNombre[i]))) {
         address <- paste(
             gsub(" ", "+", colonias$NomColonia[i], fixed = TRUE), "+",
             "Zapopan", sep = "")
         print(i)
         print(address)
-        colonias[i, c("LatxNombre", "LongxNombre")] <- getCoordinates(address)
+        colonias[i, c("LatxNombre",
+                      "LongxNombre")] <- getCoordinates(address)
     }
 }
 
@@ -168,12 +173,14 @@ for (i in 1:dim(colonias)[1]) {
         print(i)
         print(address)
         if (!is.na(address)) {
-            colonias[i, c("LatxCP", "LongxCP")] <- getC)oordinates(address)
-        }
+            colonias[i, c("LatxCP",
+                          "LongxCP")] <- getC)oordinates(address)
     }
 }
+}
 
-write.csv(colonias, file = "Output/Data/Colonias_clean_geo.csv", row.names = FALSE)
+write.csv(colonias,
+file = "Output/Data/Colonias_clean_geo.csv", row.names = FALSE)
 
 ##
 ## EOF

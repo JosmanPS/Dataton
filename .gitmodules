@@ -1,0 +1,3 @@
+[submodule "twitter-geo-search"]
+	path = twitter-geo-search
+	url = https://github.com/otrenav/twitter-geo-search
