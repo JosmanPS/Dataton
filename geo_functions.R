@@ -30,10 +30,10 @@ tesselate <- function(grids, map, alpha = .3) {
     results <- list()
     intercepts <- ceiling(sqrt(grids + 1))
     
-    top_left     <- c(-103.48068, 20.78433)
-    bottom_left  <- c(-103.48068, 20.589055)
-    top_right    <- c(-103.322068, 20.78433)
-    bottom_right <- c(-103.322068, 20.589055)
+    top_left     <- c(-103.55, 21.2)
+    bottom_left  <- c(-103.55, 20.54)
+    top_right    <- c(-103.31, 21.2)
+    bottom_right <- c(-103.31, 20.54)
     
     
     h_lines <- data.frame(x = rep(top_left[1], intercepts),
@@ -220,16 +220,13 @@ geom_segment2 <- function(mapping = NULL, data = NULL, stat =
 #---------------------------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------------------------
 # plot zapopan
-zap.map      <- get_map(location = "Zapopan", zoom = 12, maptype = "toner",
+setwd("C:/Users/hp/Dropbox/Sibila/Projects/Dataton")
+zap.map      <- get_map(c(-103.45, 20.70), zoom = 12, maptype = "toner",
                         source = "stamen")
 zap.map.plot <- ggmap(zap.map)
-contorno <- read.table("D:/Usuarios/luis.roman/Dropbox/Sibila/Projects/Dataton/Input/Data/Zapopan/contorno.txt",
-                       header = F, sep = ",")
-zap.full <- zap.map.plot + geom_polygon(data = contorno, aes(x = V1, y = V2), col = "darkred", size = 1)
-zap.full
 # Read in files
 # shapefile streets
-data.shape.street<-read.shp("./input/Data/INEGI/Vialidades/jal_eje_vial.shp")
+data.shape.street <- read.shp("./input/Data/INEGI/Vialidades/jal_eje_vial.shp")
 coords.street <- ldply(data.shape.street[[1]],
                        function(t){t <- t[8]$points})
 # plot streets
@@ -237,33 +234,36 @@ zap.map.plot + geom_point(data = coords.street, aes(x = X, y = Y),
                           col = "red4", size = .4) 
 
 # shapefile and data services
-data.services <- read.dbf("D:/Usuarios/luis.roman/Dropbox/Sibila/Projects/Dataton/Input/Data/INEGI/Servicios/jal_servicios_p.dbf")
-data.shape.services <-read.shp("D:/Usuarios/luis.roman/Dropbox/Sibila/Projects/Dataton/Input/Data/INEGI/Servicios/jal_servicios_p.shp")
+data.services <- read.dbf("C:/Users/hp/Dropbox/Sibila/Projects/Dataton/Input/Data/INEGI/Servicios/jal_servicios_p.dbf")
+data.shape.services <-read.shp("C:/Users/hp/Dropbox/Sibila/Projects/Dataton/Input/Data/INEGI/Servicios/jal_servicios_p.shp")
 coords.services <- data.frame(x = data.shape.services[[1]][, 2],
                               y = data.shape.services[[1]][, 3],
                               class = data.services[[1]][ ,4])
 # plot services
-zap.map.plot + geom_point(data = coords.services, aes(x = x,
+zap.tes[[1]] + geom_point(data = coords.services, aes(x = x,
                                                       y = y,
-                                                      col = class))
+                                                      col = class),
+                          type = 17)
 
-# data set crimen
-crimen <- read.csv("D:/Usuarios/luis.roman/Dropbox/Sibila/Projects/Dataton/Input/Data/Zapopan/eventos_tryout.csv")
+# data set delitos
+crimen <- read.csv("C:/Users/hp/Dropbox/Sibila/Projects/Dataton/Input/Data/Zapopan/eventos_tryout.csv")
 crimen <- crimen[, c(7, 8, 12, 1, 3)]
 
+# data set delitos que fueron detenidos
+
 # plot crime
-zap.tes.plot + geom_point(data = crimen, aes(x = X, y = Y,
-                                             col = Descripcion))
+crime.map <- zap.tes[[1]] + geom_point(data = crimen, aes(x = X, y = Y,
+                                             col = Descripcion), type = 19)
 
 # data set parques
-parques <- read.csv("D:/Usuarios/luis.roman/Dropbox/Sibila/Projects/Dataton/Input/Data/Zapopan/Parques.csv")
+parques <- read.csv("C:/Users/hp/Dropbox/Sibila/Projects/Dataton/Input/Data/Zapopan/Parques.csv")
 # plot parques
-zap.tes.plot + geom_point(data = parques, aes(x = Longitud, y = Latitud))
+crime.map + geom_point(data = parques, aes(x = Longitud, y = Latitud), size = 3)
 
 # data set llamadas
-llamadas <- read.csv("D:/Usuarios/luis.roman/Dropbox/Sibila/Projects/Dataton/Input/Data/Movistar/Movistar_Zapopan.csv")
+llamadas <- read.csv("C:/Users/hp/Dropbox/Sibila/Projects/Dataton/Input/Data/Movistar/Movistar_Zapopan.csv")
 # plot llamadas
-zap.tes.plot + geom_point(data = llamadas, aes(x = Longitud, y = Latitud))
+crime.map + geom_point(data = llamadas, aes(x = Longitud, y = Latitud), size = 3)
 
 
 

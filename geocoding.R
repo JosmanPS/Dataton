@@ -1,16 +1,16 @@
-#
-# DATATON 2014
-#
-# geocoding.R
-#
-# Get coordinates of address using
-# Google's geo-coding API.
-#
-# Omar Trejo
-#
+##
+## DATATON 2014
+##
+## geocoding.R
+##
+## Get coordinates of address using
+## Google's geo-coding API.
+##
+## Omar Trejo
+##
 
-# Note: For server reponses see documentation at
-# https://developers.google.com/maps/documentation/geocoding/
+## Note: For server reponses see documentation at
+## https://developers.google.com/maps/documentation/geocoding/
 
 require(rjson)
 
@@ -26,18 +26,18 @@ getCoordinates <- function(address) {
     } else {
         coord <- c(NA, NA)
     }
-        return(coord)
+    return(coord)
 }
 
-# Call with:
+## Call with:
 
-# address <- paste(
-#     df$Calle[1], "+", 
-#     df$Exterior[1], "+,", 
-#     df$Colonia[1], sep = "")
-# 
-# getCoordinates(address)
+## address <- paste(
+##     df$Calle[1], "+", 
+##     df$Exterior[1], "+,", 
+##     df$Colonia[1], sep = "")
+## 
+## getCoordinates(address)
 
-#
-# EOF
-#
+##
+## EOF
+##
